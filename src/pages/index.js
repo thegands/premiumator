@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 // import { Link } from "gatsby"
 import axios from 'axios'
 
-// import Layout from "../components/layout"
+import Layout from "../components/layout"
 // import Image from "../components/image"
 // import SEO from "../components/seo"
 
@@ -25,7 +25,7 @@ class ClientFetchingExample extends Component {
   state = {
     loading: false,
     error: false,
-    apiKey: localStorage.getItem("apikey") ? localStorage.getItem("apikey") : '',
+    apiKey: '',// localStorage.getItem("apikey") ? localStorage.getItem("apikey") : '',
     downloadLink: '',
     cache: {
       filename: '',
@@ -60,47 +60,49 @@ class ClientFetchingExample extends Component {
     const apiKey = this.state.apiKey
 
     return (
-      <div style={{ textAlign: 'center', width: '600px', margin: '50px auto' }}>
+      <Layout>
+        <div style={{ textAlign: 'center', width: '600px', margin: '50px auto' }}>
 
-        <form onSubmit={this.setApiKey}>
-          <label>
-            API Key
-            <input
-              type="text"
-              name="apiKey"
-              value={apiKey}
-              onChange={this.handleInputChange}
-            />
-          </label>
-          <button type="submit">Submit</button>
-        </form>
+          <form onSubmit={this.setApiKey}>
+            <label>
+              API Key
+              <input
+                type="text"
+                name="apiKey"
+                value={apiKey}
+                onChange={this.handleInputChange}
+              />
+            </label>
+            <button type="submit">Submit</button>
+          </form>
 
-        <form onSubmit={this.checkLink}>
-          <label>
-            Download Link
-            <input
-              type="text"
-              name="downloadLink"
-              onChange={this.handleInputChange}
-            />
-          </label>
-          <button type="submit">Submit</button>
-        </form>
+          <form onSubmit={this.checkLink}>
+            <label>
+              Download Link
+              <input
+                type="text"
+                name="downloadLink"
+                onChange={this.handleInputChange}
+              />
+            </label>
+            <button type="submit">Submit</button>
+          </form>
 
-        <div>
-          {this.state.loading ? (
-            <p>Please hold, checking cache</p>
-          ) : filename && filesize ? (
-            <>
-              <h2>{filename}</h2>
-              <h2>{filesize}</h2>
-              <h2>{`${isCached}`}</h2>
-            </>
-          ) : (
-            <p>Error checking cache</p>
-          )}
+          <div>
+            {this.state.loading ? (
+              <p>Please hold, checking cache</p>
+            ) : filename && filesize ? (
+              <>
+                <h2>{filename}</h2>
+                <h2>{filesize}</h2>
+                <h2>{`${isCached}`}</h2>
+              </>
+            ) : (
+              <p>Error checking cache</p>
+            )}
+          </div>
         </div>
-      </div>
+      </Layout>
     )
   }
 
@@ -110,7 +112,7 @@ class ClientFetchingExample extends Component {
     this.setState({ loading: true })
 
     const params = new URLSearchParams()
-    params.append('apikey', localStorage.getItem("apikey"))
+    params.append('apikey', this.state.apiKey)//localStorage.getItem("apikey"))
     params.append('items[]', this.state.downloadLink)
     axios
       .post('https://www.premiumize.me/api/cache/check', params)
