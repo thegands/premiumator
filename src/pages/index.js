@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import Layout from "../components/layout"
 // import Image from "../components/image"
-// import SEO from "../components/seo"
+import SEO from "../components/seo"
 
 // const IndexPage = () => (
 //   <Layout>
@@ -61,6 +61,7 @@ class ClientFetchingExample extends Component {
 
     return (
       <Layout>
+        <SEO title="Home" keywords={[`gatsby`, `application`, `react`]} />
         <div style={{ textAlign: 'center', width: '600px', margin: '50px auto' }}>
 
           <form onSubmit={this.setApiKey}>
