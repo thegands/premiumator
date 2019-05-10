@@ -34,9 +34,10 @@ class ClientFetchingExample extends Component {
     },
   }
 
-  // componentDidMount() {
+  componentDidMount() {
+    this.setState({ apiKey: localStorage.getItem("apikey") })
   //   this.checkCache()
-  // }
+  }
 
   handleInputChange = event => {
     const target = event.target
