@@ -32,6 +32,7 @@ class ClientFetchingExample extends Component {
       filesize: '',
       isCached: '',
     },
+    content: [],
   }
 
   componentDidMount() {
@@ -59,6 +60,7 @@ class ClientFetchingExample extends Component {
 
     const { filename, filesize, isCached } = this.state.cache
     const apiKey = this.state.apiKey
+    const content = this.state.content
 
     return (
       <Layout>
@@ -78,7 +80,7 @@ class ClientFetchingExample extends Component {
             <button type="submit">Submit</button>
           </form>
 
-          <form onSubmit={this.checkLink}>
+          <form onSubmit={this.directDlLink}>
             <label>
               Download Link
               <input
@@ -90,6 +92,7 @@ class ClientFetchingExample extends Component {
             <button type="submit">Submit</button>
           </form>
 
+{/*
           <div>
             {this.state.loading ? (
               <p>Please hold, checking cache</p>
@@ -100,6 +103,16 @@ class ClientFetchingExample extends Component {
                 <h2>{`${isCached}`}</h2>
               </>
             ) : (
+              <p>Error checking cache</p>
+            )}
+          </div>
+*/}
+          <div>
+            {this.state.loading ? (
+              <p>Please hold, checking cache</p>
+            ) : content ? content.map ((file, index ) => (
+                <h2><a href={file.link}>{file.path}</a></h2>
+            )) : (
               <p>Error checking cache</p>
             )}
           </div>
@@ -131,6 +144,28 @@ class ClientFetchingExample extends Component {
             filesize,
             isCached,
           },
+        })
+      })
+      .catch(error => {
+        this.setState({ loading: false, error })
+      })
+  }
+
+  directDlLink = event => {
+    event.preventDefault()
+    this.setState({ loading: true })
+
+    const params = new URLSearchParams()
+    params.append('apikey', this.state.apiKey)//localStorage.getItem("apikey"))
+    params.append('src', this.state.downloadLink)
+    axios
+      .post('https://www.premiumize.me/api/transfer/directdl', params)
+      .then(response => {
+        const content = response.data.content
+
+        this.setState({
+          loading: false,
+          content: content,
         })
       })
       .catch(error => {
