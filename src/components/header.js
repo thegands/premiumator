@@ -26,6 +26,7 @@ const Header = ({ siteTitle }) => (
         >
           {siteTitle}
         </Link>
+        <a style={{float: `right`, color: `red`}} href="https://www.premiumize.me/free">Activate Premiumize Free Mode</a>
       </h1>
     </div>
   </header>
